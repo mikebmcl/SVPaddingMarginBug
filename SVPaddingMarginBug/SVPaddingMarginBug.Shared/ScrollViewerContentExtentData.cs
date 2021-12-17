@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
+using Windows.UI.Xaml;
+
 namespace SVPaddingMarginBug
 {
     [Windows.UI.Xaml.Data.Bindable]
@@ -11,7 +13,62 @@ namespace SVPaddingMarginBug
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public string ScrollViewerName { get; set; }
+        private string m_name;
+        public string Name
+        {
+            get => m_name;
+            set
+            {
+                if (m_name != value)
+                {
+                    m_name = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        private string m_scrollViewerName;
+        public string ScrollViewerName
+        {
+            get => m_scrollViewerName;
+            set
+            {
+                if (m_scrollViewerName != value)
+                {
+                    m_scrollViewerName = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        public string ScrollViewerPaddingName => nameof(ScrollViewerPadding);
+        private Thickness m_scrollViewerPadding;
+        public Thickness ScrollViewerPadding
+        {
+            get => m_scrollViewerPadding;
+            set
+            {
+                if (m_scrollViewerPadding != value)
+                {
+                    m_scrollViewerPadding = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string ContentMarginName => nameof(ContentMargin);
+        private Thickness m_contentMargin;
+        public Thickness ContentMargin
+        {
+            get => m_contentMargin;
+            set
+            {
+                if (m_contentMargin != value)
+                {
+                    m_contentMargin = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         private string _svActualWidth;
         public string SVActualWidth
         {

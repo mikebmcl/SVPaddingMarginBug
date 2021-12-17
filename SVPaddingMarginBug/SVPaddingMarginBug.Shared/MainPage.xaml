@@ -10,10 +10,16 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+        <Style x:Key="LocalHeaderTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="4,8,4,12" />
+        </Style>
+        <Style x:Key="SeperatorRectangleStyle" TargetType="Rectangle">
+            <Setter Property="Margin" Value="2,4" />
+            <Setter Property="Height" Value="2" />
+            <Setter Property="Fill" Value="ForestGreen" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
     </Page.Resources>
     <Grid BorderBrush="Red" BorderThickness="2">
@@ -41,7 +47,7 @@
 						BorderBrush="Orange"
 						BorderThickness="{x:Bind ContentBorderThickness}"
 						Background="Turquoise">
-                <TextBlock Text="No ContentMargin and No ScrollViewer Padding"
+                <TextBlock Text="{x:Bind NeitherDisplayName, Mode=OneTime}"
 						   TextWrapping="NoWrap"
 						   Margin="8" />
                 <TextBlock Margin="8"
@@ -83,8 +89,8 @@
 						BorderThickness="{x:Bind ContentBorderThickness}"
 						Margin="{x:Bind ContentMargin}"
 						Background="Turquoise">
-                <TextBlock Text="ContentMargin"
-						   TextWrapping="NoWrap"
+                <TextBlock Text="{x:Bind ContentMarginDisplayName, Mode=OneTime}"
+                           TextWrapping="NoWrap"
 						   Margin="8" />
                 <TextBlock Margin="8"
 						   TextWrapping="NoWrap"
@@ -125,7 +131,7 @@
 						BorderBrush="Orange"
 						BorderThickness="{x:Bind ContentBorderThickness}"
 						Background="Turquoise">
-                <TextBlock Text="ScrollViewer Padding"
+                <TextBlock Text="{x:Bind SVPaddingDisplayName, Mode=OneTime}"
 						   TextWrapping="NoWrap"
 						   Margin="8" />
                 <TextBlock Margin="8"
@@ -168,7 +174,7 @@
 						BorderThickness="{x:Bind ContentBorderThickness}"
 						Margin="{x:Bind ContentMargin}"
 						Background="Turquoise">
-                <TextBlock Text="ScrollViewer Padding and ContentMargin"
+                <TextBlock Text="{x:Bind BothDisplayName, Mode=OneTime}"
 						   TextWrapping="NoWrap"
 						   Margin="8" />
                 <TextBlock Margin="8"
@@ -198,476 +204,540 @@
         </ScrollViewer>
 
         <!-- Right Column -->
-        <ScrollViewer Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" BorderBrush="DarkCyan" BorderThickness="1" Margin="2,4">
+        <ScrollViewer Grid.Row="0" 
+                      Grid.RowSpan="2" 
+                      Grid.Column="1" 
+                      BorderBrush="DarkCyan" 
+                      BorderThickness="1" 
+                      Margin="2,4" 
+                      Padding="4"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch">
             <!-- No ContentMargin and No ScrollViewer Padding -->
-            <StackPanel Margin="4" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
-                <TextBlock Text="No ContentMargin and No ScrollViewer Padding"
-						   Style="{StaticResource HeaderTextBlockStyle}" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}" Margin="4" />
-                    <TextBlock Text="{x:Bind ScrollViewerPadding.ToString()}" Margin="4" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}" Margin="4" />
-                    <TextBlock Text="{x:Bind ContentMargin.ToString()}" Margin="4" />
-                </StackPanel>
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.SVActualWidth}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.SVActualHeight}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ViewPortWidth}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ViewPortHeight}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ExtentWidth}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ExtentHeight}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ContentActualWidth}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ContentActualHeight}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableWidth}"
-						Margin="4" />
-                <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableHeight}"
-						Margin="4" />
-            </StackPanel>
+            <Grid BorderBrush="Gray" BorderThickness="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="No Padding and No ContentMargin"
+                               Grid.Row="0"
+                               Grid.ColumnSpan="2"
+                               Style="{StaticResource LocalHeaderTextBlockStyle}" />
+                    <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}" 
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind ScrollViewerPadding.ToString()}" 
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}" 
+                               Grid.Row="2"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind ContentMargin.ToString()}"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="ScrollViewer ActualWidth: "
+                               Grid.Row="3"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.SVActualWidthValue}"
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="ScrollViewer ActualHeight: "
+                               Grid.Row="4"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.SVActualHeightValue}"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="ViewPort Width: "
+                               Grid.Row="5"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ViewPortWidthValue}"
+                               Grid.Row="5"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="ViewPort Height: "
+                               Grid.Row="6"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ViewPortHeightValue}"
+                               Grid.Row="6"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="Extent Width: "
+                               Grid.Row="7"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ExtentWidthValue}"
+                               Grid.Row="7"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="Extent Height: "
+                               Grid.Row="8"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ExtentHeightValue}"
+                               Grid.Row="8"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="Content ActualWidth: "
+                               Grid.Row="9"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ContentActualWidthValue}"
+                               Grid.Row="9"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="Content ActualHeight: "
+                               Grid.Row="10"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ContentActualHeightValue}"
+                               Grid.Row="10"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="ScrollableWidth: "
+                               Grid.Row="11"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableWidthValue}"
+                               Grid.Row="11"
+                               Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="ScrollableHeight: "
+                               Grid.Row="12"
+                               Grid.Column="0"
+                               Margin="4" />
+                    <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableHeightValue}"
+                               Grid.Row="12"
+                               Grid.Column="1"
+                               Margin="4" />
+                </Grid>
+            </Grid>
         </ScrollViewer>
 
         <ScrollViewer Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" BorderBrush="Navy" BorderThickness="1" Margin="2,4">
-            <StackPanel HorizontalAlignment="Stretch">
-                <!-- ContentMargin -->
-                <StackPanel Margin="4" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
-                    <TextBlock Text="ContentMargin"
-                               Style="{StaticResource HeaderTextBlockStyle}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}" Margin="4" />
-                        <TextBlock Text="{x:Bind ScrollViewerPadding.ToString()}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}" Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMargin.ToString()}" Margin="4" />
-                    </StackPanel>
+            <ItemsControl ItemsSource="{x:Bind ScrollViewerData}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="local:ScrollViewerContentExtentData">
+                        <Grid BorderBrush="Gray" 
+                              BorderThickness="1"
+                              Margin="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.SVActualWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.SVActualWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.SVActualWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.SVActualHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.SVActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.SVActualHeightActualDifference}" Margin="4" />
-                    </StackPanel>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ViewPortWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ViewPortWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ViewPortWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ViewPortHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ViewPortHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ViewPortHeightActualDifference}" Margin="4" />
-                    </StackPanel>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ExtentWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ExtentWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ExtentWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{x:Bind Name}"
+                                           Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           Style="{StaticResource LocalHeaderTextBlockStyle}" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ExtentHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ExtentHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ExtentHeightActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}"
+                                           Grid.Row="1"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollViewerPadding.ToString()}"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}"
+                                           Grid.Row="2"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentMargin.ToString()}"
+                                           Grid.Row="2"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="3"
+                                           Grid.ColumnSpan="2" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ContentActualWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ContentActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ContentActualWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <TextBlock Text="ScrollViewer ActualWidth:"
+                                           Grid.Row="4"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind SVActualWidthValue}"
+                                           Grid.Row="4"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="5"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind SVActualWidthExpectedDifference}"
+                                           Grid.Row="5"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="6"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind SVActualWidthActualDifference}"
+                                           Grid.Row="6"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="7"
+                                           Grid.ColumnSpan="2" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ContentActualHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ContentActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ContentActualHeightActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <TextBlock Text="ScrollViewer ActualHeight: "
+                                           Grid.Row="8"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind SVActualHeightValue}"
+                                           Grid.Row="8"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="9"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind SVActualHeightExpectedDifference}"
+                                           Grid.Row="9"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="10"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind SVActualHeightActualDifference}"
+                                           Grid.Row="10"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="11"
+                                           Grid.ColumnSpan="2" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ScrollableWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ScrollableHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ScrollableWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <TextBlock Text="ViewPort Width: "
+                                           Grid.Row="12"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ViewPortWidthValue}"
+                                           Grid.Row="12"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="13"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ViewPortWidthExpectedDifference}"
+                                           Grid.Row="13"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="14"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ViewPortWidthActualDifference}"
+                                           Grid.Row="14"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="15"
+                                           Grid.ColumnSpan="2" />
 
-                    <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ScrollableHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ScrollableHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMarginScrollViewerContentExtentData.ScrollableHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-                </StackPanel>
+                                <TextBlock Text="ViewPort Height: "
+                                           Grid.Row="16"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ViewPortHeightValue}"
+                                           Grid.Row="16"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="17"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ViewPortHeightExpectedDifference}"
+                                           Grid.Row="17"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="18"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ViewPortHeightActualDifference}"
+                                           Grid.Row="18"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                <!-- ScrollViewerPadding -->
-                <StackPanel Margin="4" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
-                    <TextBlock Text="ScrollViewer Padding"
-						Style="{StaticResource HeaderTextBlockStyle}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}" Margin="4" />
-                        <TextBlock Text="{x:Bind ScrollViewerPadding.ToString()}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}" Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMargin.ToString()}" Margin="4" />
-                    </StackPanel>
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="19"
+                                           Grid.ColumnSpan="2" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <TextBlock Text="Extent Width: "
+                                           Grid.Row="20"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ExtentWidthValue}"
+                                           Grid.Row="20"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="21"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ExtentWidthExpectedDifference}"
+                                           Grid.Row="21"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="22"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ExtentWidthActualDifference}"
+                                           Grid.Row="22"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.SVActualWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.SVActualWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.SVActualWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="23"
+                                           Grid.ColumnSpan="2" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <TextBlock Text="Extent Height: "
+                                           Grid.Row="24"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ExtentHeightValue}"
+                                           Grid.Row="24"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="25"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ExtentHeightExpectedDifference}"
+                                           Grid.Row="25"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="26"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ExtentHeightActualDifference}"
+                                           Grid.Row="26"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.SVActualHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.SVActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.SVActualHeightActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="27"
+                                           Grid.ColumnSpan="2" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <TextBlock Text="Content ActualWidth: "
+                                           Grid.Row="28"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentActualWidthValue}"
+                                           Grid.Row="28"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="29"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentActualHeightExpectedDifference}"
+                                           Grid.Row="29"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="30"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentActualWidthActualDifference}"
+                                           Grid.Row="30"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ViewPortWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ViewPortWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ViewPortWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="31"
+                                           Grid.ColumnSpan="2" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <TextBlock Text="Content ActualHeight: "
+                                           Grid.Row="32"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentActualHeightValue}"
+                                           Grid.Row="32"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="33"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentActualHeightExpectedDifference}"
+                                           Grid.Row="33"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="34"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ContentActualHeightActualDifference}"
+                                           Grid.Row="34"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ViewPortHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ViewPortHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ViewPortHeightActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="35"
+                                           Grid.ColumnSpan="2" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
+                                <TextBlock Text="ScrollableWidth: "
+                                           Grid.Row="36"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollableWidthValue}"
+                                           Grid.Row="36"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="37"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollableHeightExpectedDifference}"
+                                           Grid.Row="37"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="38"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollableWidthActualDifference}"
+                                           Grid.Row="38"
+                                           Grid.Column="1"
+                                           Margin="4" />
 
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ExtentWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ExtentWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ExtentWidthActualDifference}" Margin="4" />
-                    </StackPanel>
+                                <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
+                                           Grid.Row="39"
+                                           Grid.ColumnSpan="2" />
 
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ExtentHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ExtentHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ExtentHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ContentActualWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ContentActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ContentActualWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ContentActualHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ContentActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ContentActualHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ScrollableWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ScrollableHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ScrollableWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ScrollableHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ScrollableHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind SVPaddingScrollViewerContentExtentData.ScrollableHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-                </StackPanel>
-
-                <!-- ScrollViewer Padding and ContentMargin -->
-                <StackPanel Margin="4" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
-                    <TextBlock Text="ScrollViewer Padding and ContentMargin"
-						Style="{StaticResource HeaderTextBlockStyle}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}" Margin="4" />
-                        <TextBlock Text="{x:Bind ScrollViewerPadding.ToString()}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}" Margin="4" />
-                        <TextBlock Text="{x:Bind ContentMargin.ToString()}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.SVActualWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.SVActualWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.SVActualWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.SVActualHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.SVActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.SVActualHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ViewPortWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ViewPortWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ViewPortWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ViewPortHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ViewPortHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ViewPortHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ExtentWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ExtentWidthExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ExtentWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ExtentHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ExtentHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ExtentHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ContentActualWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ContentActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ContentActualWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ContentActualHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ContentActualHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ContentActualHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ScrollableWidth}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ScrollableHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ScrollableWidthActualDifference}" Margin="4" />
-                    </StackPanel>
-
-                    <Rectangle Margin="2,4" Height="2" Fill="ForestGreen" HorizontalAlignment="Stretch" />
-
-                    <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ScrollableHeight}"
-						Margin="4" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Expected Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ScrollableHeightExpectedDifference}" Margin="4" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Actual Difference: " Margin="4" />
-                        <TextBlock Text="{x:Bind BothScrollViewerContentExtentData.ScrollableHeightActualDifference}" Margin="4" />
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
+                                <TextBlock Text="ScrollableHeight: "
+                                           Grid.Row="40"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollableHeightValue}"
+                                           Grid.Row="40"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Expected Difference: "
+                                           Grid.Row="41"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollableHeightExpectedDifference}"
+                                           Grid.Row="41"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                                <TextBlock Text="Actual Difference: "
+                                           Grid.Row="42"
+                                           Grid.Column="0"
+                                           Margin="4" />
+                                <TextBlock Text="{x:Bind ScrollableHeightActualDifference}"
+                                           Grid.Row="42"
+                                           Grid.Column="1"
+                                           Margin="4" />
+                            </Grid>
+                            <!--<TextBlock Text=""
+                                           Grid.Column="1" />-->
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </Page>

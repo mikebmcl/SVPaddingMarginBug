@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace SVPaddingMarginBug
             ContentMarginScrollViewer.LayoutUpdated += ContentMarginScrollViewer_LayoutUpdated;
             SVPaddingScrollViewer.LayoutUpdated += SVPaddingScrollViewer_LayoutUpdated;
             BothScrollViewer.LayoutUpdated += BothScrollViewer_LayoutUpdated;
+            ScrollViewerData = new ObservableCollection<ScrollViewerContentExtentData>(new ScrollViewerContentExtentData[] { new ScrollViewerContentExtentData(), new ScrollViewerContentExtentData(), new ScrollViewerContentExtentData() });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -131,9 +133,15 @@ namespace SVPaddingMarginBug
             }
         }
 
+        public ObservableCollection<ScrollViewerContentExtentData> ScrollViewerData { get; set; }
         string _dblFormat = "F";
         System.Globalization.CultureInfo _cultureInfo = System.Globalization.CultureInfo.CurrentUICulture;
-        private ScrollViewerContentExtentData GetContentExtentDataForScrollViewer(ScrollViewer sv) => new ScrollViewerContentExtentData() { ScrollViewerName = sv.Name, ContentActualHeight = $"Content ActualHeight: {((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN).ToString(_dblFormat, _cultureInfo)}", ContentActualHeightValue = (sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN, ContentActualWidth = $"Content ActualWidth: {((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN).ToString(_dblFormat, _cultureInfo)}", ContentActualWidthValue = (sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN, SVActualHeight = $"ScrollViewer ActualHeight: {sv.ActualHeight.ToString(_dblFormat, _cultureInfo)}", SVActualHeightValue = sv.ActualHeight, SVActualWidth = $"ScrollViewer ActualWidth: {sv.ActualWidth.ToString(_dblFormat, _cultureInfo)}", SVActualWidthValue = sv.ActualWidth, ExtentHeight = $"ExtentHeight: {sv.ExtentHeight.ToString(_dblFormat, _cultureInfo)}", ExtentHeightValue = sv.ExtentHeight, ExtentWidth = $"ExtentWidth: {sv.ExtentWidth.ToString(_dblFormat, _cultureInfo)}", ExtentWidthValue = sv.ExtentWidth, ViewPortHeight = $"ViewportHeight: {sv.ViewportHeight.ToString(_dblFormat, _cultureInfo)}", ViewPortHeightValue = sv.ViewportHeight, ViewPortWidth = $"ViewportWidth: {sv.ViewportWidth.ToString(_dblFormat, _cultureInfo)}", ViewPortWidthValue = sv.ViewportWidth, ScrollableHeight = $"ScrollableHeight: {sv.ScrollableHeight.ToString(_dblFormat, _cultureInfo)}", ScrollableHeightValue = sv.ScrollableHeight, ScrollableWidth = $"ScrollableWidth: {sv.ScrollableWidth.ToString(_dblFormat, _cultureInfo)}", ScrollableWidthValue = sv.ScrollableWidth };
+        private ScrollViewerContentExtentData GetContentExtentDataForScrollViewer(ScrollViewer sv) => new ScrollViewerContentExtentData() { ScrollViewerName = sv.Name, ContentMargin = ContentMargin, ScrollViewerPadding = ScrollViewerPadding, ContentActualHeight = $"Content ActualHeight: {((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN).ToString(_dblFormat, _cultureInfo)}", ContentActualHeightValue = (sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN, ContentActualWidth = $"Content ActualWidth: {((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN).ToString(_dblFormat, _cultureInfo)}", ContentActualWidthValue = (sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN, SVActualHeight = $"ScrollViewer ActualHeight: {sv.ActualHeight.ToString(_dblFormat, _cultureInfo)}", SVActualHeightValue = sv.ActualHeight, SVActualWidth = $"ScrollViewer ActualWidth: {sv.ActualWidth.ToString(_dblFormat, _cultureInfo)}", SVActualWidthValue = sv.ActualWidth, ExtentHeight = $"ExtentHeight: {sv.ExtentHeight.ToString(_dblFormat, _cultureInfo)}", ExtentHeightValue = sv.ExtentHeight, ExtentWidth = $"ExtentWidth: {sv.ExtentWidth.ToString(_dblFormat, _cultureInfo)}", ExtentWidthValue = sv.ExtentWidth, ViewPortHeight = $"ViewportHeight: {sv.ViewportHeight.ToString(_dblFormat, _cultureInfo)}", ViewPortHeightValue = sv.ViewportHeight, ViewPortWidth = $"ViewportWidth: {sv.ViewportWidth.ToString(_dblFormat, _cultureInfo)}", ViewPortWidthValue = sv.ViewportWidth, ScrollableHeight = $"ScrollableHeight: {sv.ScrollableHeight.ToString(_dblFormat, _cultureInfo)}", ScrollableHeightValue = sv.ScrollableHeight, ScrollableWidth = $"ScrollableWidth: {sv.ScrollableWidth.ToString(_dblFormat, _cultureInfo)}", ScrollableWidthValue = sv.ScrollableWidth };
+
+        public string NeitherDisplayName => "No Padding and No Content Margin";
+        public string SVPaddingDisplayName => "ScrollViewer Padding";
+        public string ContentMarginDisplayName => "Content Margin";
+        public string BothDisplayName => "Padding and Content Margin";
 
         private Dictionary<string, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin)> _dataForLogger = new Dictionary<string, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin)>();
         private void AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(string scrollViewerName, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin) dataInfo, bool fromSizeChanged, [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = null, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = null, [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
@@ -172,6 +180,28 @@ namespace SVPaddingMarginBug
                 }
                 //_log.Error(errorString);
                 return;
+            }
+            switch (scrollViewerName)
+            {
+                case nameof(ContentMarginScrollViewer):
+                    dataInfo.data.Name = ContentMarginDisplayName;
+                    ScrollViewerData[0] = dataInfo.data;
+                    break;
+                case nameof(SVPaddingScrollViewer):
+                    dataInfo.data.Name = SVPaddingDisplayName;
+                    ScrollViewerData[1] = dataInfo.data;
+                    break;
+                case nameof(BothScrollViewer):
+                    dataInfo.data.Name = BothDisplayName;
+                    ScrollViewerData[2] = dataInfo.data;
+                    break;
+                case nameof(NeitherScrollViewer):
+                    dataInfo.data.Name = NeitherDisplayName;
+                    // We don't want this in the collection.
+                    break;
+                default:
+                    //_log.Debug($"Unexpected data with name '{scrollViewerName ?? "(null)"}");
+                    break;
             }
             if (!_dataForLogger.ContainsKey(scrollViewerName) || fromSizeChanged)
             {
