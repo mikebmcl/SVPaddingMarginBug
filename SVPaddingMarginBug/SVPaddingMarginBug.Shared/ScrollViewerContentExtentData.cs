@@ -10,6 +10,11 @@ namespace SVPaddingMarginBug
     [Windows.UI.Xaml.Data.Bindable]
     public class ScrollViewerContentExtentData : INotifyPropertyChanged
     {
+        // We consider a one pixel difference value to be a valid difference due to internal layout and rounding differences on various platforms.
+        private const int m_maximumValidDifference = 1;
+        public bool? InvalidDifferenceBool(double x, double y) => Math.Abs(x - y) > m_maximumValidDifference;
+        public Visibility InvalidDifferenceVisibility(double x, double y) => InvalidDifferenceBool(x, y) is true ? Visibility.Visible : Visibility.Collapsed;
+        public string DifferenceCheckResultText(double x, double y) => InvalidDifferenceBool(x, y) is true ? "Failed" : "Passed";
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
@@ -26,6 +31,7 @@ namespace SVPaddingMarginBug
                 }
             }
         }
+        public static string ThicknessAsString(Thickness t) => $"{{ L: {t.Left} T: {t.Top} R: {t.Right} B: {t.Bottom} }}";
         private string m_scrollViewerName;
         public string ScrollViewerName
         {
@@ -39,7 +45,7 @@ namespace SVPaddingMarginBug
                 }
             }
         }
-        public string ScrollViewerPaddingName => nameof(ScrollViewerPadding);
+        public string ScrollViewerPaddingName => nameof(ScrollViewerPadding) + ":";
         private Thickness m_scrollViewerPadding;
         public Thickness ScrollViewerPadding
         {
@@ -54,7 +60,7 @@ namespace SVPaddingMarginBug
             }
         }
 
-        public string ContentMarginName => nameof(ContentMargin);
+        public string ContentMarginName => nameof(ContentMargin) + ":";
         private Thickness m_contentMargin;
         public Thickness ContentMargin
         {

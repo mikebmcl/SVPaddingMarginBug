@@ -136,7 +136,62 @@ namespace SVPaddingMarginBug
         public ObservableCollection<ScrollViewerContentExtentData> ScrollViewerData { get; set; }
         string _dblFormat = "F";
         System.Globalization.CultureInfo _cultureInfo = System.Globalization.CultureInfo.CurrentUICulture;
-        private ScrollViewerContentExtentData GetContentExtentDataForScrollViewer(ScrollViewer sv) => new ScrollViewerContentExtentData() { ScrollViewerName = sv.Name, ContentMargin = ContentMargin, ScrollViewerPadding = ScrollViewerPadding, ContentActualHeight = $"Content ActualHeight: {((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN).ToString(_dblFormat, _cultureInfo)}", ContentActualHeightValue = (sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN, ContentActualWidth = $"Content ActualWidth: {((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN).ToString(_dblFormat, _cultureInfo)}", ContentActualWidthValue = (sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN, SVActualHeight = $"ScrollViewer ActualHeight: {sv.ActualHeight.ToString(_dblFormat, _cultureInfo)}", SVActualHeightValue = sv.ActualHeight, SVActualWidth = $"ScrollViewer ActualWidth: {sv.ActualWidth.ToString(_dblFormat, _cultureInfo)}", SVActualWidthValue = sv.ActualWidth, ExtentHeight = $"ExtentHeight: {sv.ExtentHeight.ToString(_dblFormat, _cultureInfo)}", ExtentHeightValue = sv.ExtentHeight, ExtentWidth = $"ExtentWidth: {sv.ExtentWidth.ToString(_dblFormat, _cultureInfo)}", ExtentWidthValue = sv.ExtentWidth, ViewPortHeight = $"ViewportHeight: {sv.ViewportHeight.ToString(_dblFormat, _cultureInfo)}", ViewPortHeightValue = sv.ViewportHeight, ViewPortWidth = $"ViewportWidth: {sv.ViewportWidth.ToString(_dblFormat, _cultureInfo)}", ViewPortWidthValue = sv.ViewportWidth, ScrollableHeight = $"ScrollableHeight: {sv.ScrollableHeight.ToString(_dblFormat, _cultureInfo)}", ScrollableHeightValue = sv.ScrollableHeight, ScrollableWidth = $"ScrollableWidth: {sv.ScrollableWidth.ToString(_dblFormat, _cultureInfo)}", ScrollableWidthValue = sv.ScrollableWidth };
+        private ScrollViewerContentExtentData GetContentExtentDataForScrollViewer(ScrollViewer sv)
+        {
+            Thickness contentMargin;
+            Thickness scrollViewerPadding;
+            switch (sv.Name)
+            {
+                case nameof(ContentMarginScrollViewer):
+                    contentMargin = ContentMargin;
+                    scrollViewerPadding = new Thickness();
+                    break;
+                case nameof(SVPaddingScrollViewer):
+                    contentMargin = new Thickness();
+                    scrollViewerPadding = ScrollViewerPadding;
+                    break;
+                case nameof(BothScrollViewer):
+                    contentMargin = ContentMargin;
+                    scrollViewerPadding = ScrollViewerPadding;
+                    break;
+                case nameof(NeitherScrollViewer):
+                    contentMargin = new Thickness();
+                    scrollViewerPadding = new Thickness();
+                    break;
+                default:
+                    //_log.Debug($"Unexpected data with name '{scrollViewerName ?? "(null)"}");
+                    contentMargin = new Thickness(double.NaN);
+                    scrollViewerPadding = new Thickness(double.NaN);
+                    break;
+            }
+            const int numberOfDigits = 3;
+            return new ScrollViewerContentExtentData()
+            {
+                ScrollViewerName = sv.Name,
+                ContentMargin = contentMargin,
+                ScrollViewerPadding = scrollViewerPadding,
+                ContentActualHeight = $"Content ActualHeight: {((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN).ToString(_dblFormat, _cultureInfo)}",
+                ContentActualHeightValue = Math.Round((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN, 3),
+                ContentActualWidth = $"Content ActualWidth: {((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN).ToString(_dblFormat, _cultureInfo)}",
+                ContentActualWidthValue = Math.Round((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN, numberOfDigits),
+                SVActualHeight = $"ScrollViewer ActualHeight: {sv.ActualHeight.ToString(_dblFormat, _cultureInfo)}",
+                SVActualHeightValue = Math.Round(sv.ActualHeight, numberOfDigits),
+                SVActualWidth = $"ScrollViewer ActualWidth: {sv.ActualWidth.ToString(_dblFormat, _cultureInfo)}",
+                SVActualWidthValue = Math.Round(sv.ActualWidth, numberOfDigits),
+                ExtentHeight = $"ExtentHeight: {sv.ExtentHeight.ToString(_dblFormat, _cultureInfo)}",
+                ExtentHeightValue = Math.Round(sv.ExtentHeight, numberOfDigits),
+                ExtentWidth = $"ExtentWidth: {sv.ExtentWidth.ToString(_dblFormat, _cultureInfo)}",
+                ExtentWidthValue = Math.Round(sv.ExtentWidth, numberOfDigits),
+                ViewPortHeight = $"ViewportHeight: {sv.ViewportHeight.ToString(_dblFormat, _cultureInfo)}",
+                ViewPortHeightValue = Math.Round(sv.ViewportHeight, numberOfDigits),
+                ViewPortWidth = $"ViewportWidth: {sv.ViewportWidth.ToString(_dblFormat, _cultureInfo)}",
+                ViewPortWidthValue = Math.Round(sv.ViewportWidth, numberOfDigits),
+                ScrollableHeight = $"ScrollableHeight: {sv.ScrollableHeight.ToString(_dblFormat, _cultureInfo)}",
+                ScrollableHeightValue = Math.Round(sv.ScrollableHeight, numberOfDigits),
+                ScrollableWidth = $"ScrollableWidth: {sv.ScrollableWidth.ToString(_dblFormat, _cultureInfo)}",
+                ScrollableWidthValue = Math.Round(sv.ScrollableWidth, numberOfDigits)
+            };
+        }
 
         public string NeitherDisplayName => "No Padding and No Content Margin";
         public string SVPaddingDisplayName => "ScrollViewer Padding";
@@ -144,7 +199,7 @@ namespace SVPaddingMarginBug
         public string BothDisplayName => "Padding and Content Margin";
 
         private Dictionary<string, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin)> _dataForLogger = new Dictionary<string, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin)>();
-        private void AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(string scrollViewerName, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin) dataInfo, bool fromSizeChanged, [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = null, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = null, [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
+        private void AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(string scrollViewerName, (string dataString, ScrollViewerContentExtentData data, Thickness scrollViewerPadding, Thickness contentMargin) dataInfo, bool fromSizeChanged, [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = null, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = null, [System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0)
         {
             if (string.IsNullOrEmpty(scrollViewerName))
             {
@@ -185,15 +240,21 @@ namespace SVPaddingMarginBug
             {
                 case nameof(ContentMarginScrollViewer):
                     dataInfo.data.Name = ContentMarginDisplayName;
-                    ScrollViewerData[0] = dataInfo.data;
+                    ScrollViewerData.RemoveAt(0);
+                    ScrollViewerData.Insert(0, dataInfo.data);
+                    //ScrollViewerData[0] = dataInfo.data;
                     break;
                 case nameof(SVPaddingScrollViewer):
                     dataInfo.data.Name = SVPaddingDisplayName;
-                    ScrollViewerData[1] = dataInfo.data;
+                    ScrollViewerData.RemoveAt(1);
+                    ScrollViewerData.Insert(1, dataInfo.data);
+                    //ScrollViewerData[1] = dataInfo.data;
                     break;
                 case nameof(BothScrollViewer):
                     dataInfo.data.Name = BothDisplayName;
-                    ScrollViewerData[2] = dataInfo.data;
+                    ScrollViewerData.RemoveAt(2);
+                    ScrollViewerData.Insert(2, dataInfo.data);
+                    //ScrollViewerData[2] = dataInfo.data;
                     break;
                 case nameof(NeitherScrollViewer):
                     dataInfo.data.Name = NeitherDisplayName;
@@ -287,8 +348,8 @@ namespace SVPaddingMarginBug
             var data = GetContentExtentDataForScrollViewer(sv);
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {new Thickness()}\n{nameof(ContentMargin)}: {new Thickness()}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             NeitherScrollViewerContentExtentData = data;
         }
@@ -303,8 +364,8 @@ namespace SVPaddingMarginBug
             var data = GetContentExtentDataForScrollViewer(sv);
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {new Thickness()}\n{nameof(ContentMargin)}: {new Thickness()}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             NeitherScrollViewerContentExtentData = data;
         }
@@ -319,8 +380,8 @@ namespace SVPaddingMarginBug
             var data = GetContentExtentDataForScrollViewer(sv);
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {new Thickness()}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
 
             ContentMarginScrollViewerContentExtentData = data;
@@ -336,8 +397,8 @@ namespace SVPaddingMarginBug
             var data = GetContentExtentDataForScrollViewer(sv);
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {new Thickness()}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             ContentMarginScrollViewerContentExtentData = data;
         }
@@ -352,8 +413,8 @@ namespace SVPaddingMarginBug
             var data = GetContentExtentDataForScrollViewer(sv);
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {new Thickness()}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             SVPaddingScrollViewerContentExtentData = data;
         }
@@ -368,8 +429,8 @@ namespace SVPaddingMarginBug
             var data = GetContentExtentDataForScrollViewer(sv);
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {new Thickness()}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             SVPaddingScrollViewerContentExtentData = data;
         }
@@ -385,7 +446,7 @@ namespace SVPaddingMarginBug
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
                 var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             BothScrollViewerContentExtentData = data;
         }
@@ -401,7 +462,7 @@ namespace SVPaddingMarginBug
             if (sv.ExtentWidth != 0 && sv.ExtentHeight != 0 && sv.ViewportWidth != 0 && sv.ViewportHeight != 0)
             {
                 var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), true);
             }
             BothScrollViewerContentExtentData = data;
         }
@@ -418,8 +479,8 @@ namespace SVPaddingMarginBug
                 // Avoid triggering a Windows.UI.Xaml.LayoutCycleException
                 sv.LayoutUpdated -= NeitherScrollViewer_LayoutUpdated;
                 var data = GetContentExtentDataForScrollViewer(sv);
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {new Thickness()}\n{nameof(ContentMargin)}: {new Thickness()}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
                 NeitherScrollViewerContentExtentData = data;
             }
         }
@@ -436,8 +497,8 @@ namespace SVPaddingMarginBug
                 // Avoid triggering a Windows.UI.Xaml.LayoutCycleException
                 sv.LayoutUpdated -= ContentMarginScrollViewer_LayoutUpdated;
                 var data = GetContentExtentDataForScrollViewer(sv);
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {new Thickness()}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
                 ContentMarginScrollViewerContentExtentData = data;
             }
         }
@@ -454,8 +515,8 @@ namespace SVPaddingMarginBug
                 // Avoid triggering a Windows.UI.Xaml.LayoutCycleException
                 sv.LayoutUpdated -= SVPaddingScrollViewer_LayoutUpdated;
                 var data = GetContentExtentDataForScrollViewer(sv);
-                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
+                var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {new Thickness()}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
                 SVPaddingScrollViewerContentExtentData = data;
             }
         }
@@ -473,7 +534,7 @@ namespace SVPaddingMarginBug
                 sv.LayoutUpdated -= BothScrollViewer_LayoutUpdated;
                 var data = GetContentExtentDataForScrollViewer(sv);
                 var debugData = $"\n{sv.Name}\n{nameof(ScrollViewerPadding)}: {ScrollViewerPadding}\n{nameof(ContentMargin)}: {ContentMargin}\n{nameof(ScrollViewerBorderThickness)}: {ScrollViewerBorderThickness}\n{nameof(ContentBorderThickness)}: {ContentBorderThickness}\n{data.SVActualWidth}\n{data.ViewPortWidth}\n{data.ExtentWidth}\n{data.ContentActualWidth}\n{data.ScrollableWidth}\n{data.SVActualHeight}\n{data.ViewPortHeight}\n{data.ExtentHeight}\n{data.ContentActualHeight}\n{data.ScrollableHeight}\n";
-                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentDatas(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
+                AddDataForLoggerAndPopulateExpectedAndActualValuesForScrollViewerContentExtentData(sv.Name, (debugData, data, sv.Padding, ((sv.Content as StackPanel)?.Margin ?? default)), false);
                 BothScrollViewerContentExtentData = data;
             }
         }
