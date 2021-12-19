@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 
 namespace SVPaddingMarginBug
@@ -15,6 +14,8 @@ namespace SVPaddingMarginBug
         public bool? InvalidDifferenceBool(double x, double y) => Math.Abs(x - y) > m_maximumValidDifference;
         public Visibility InvalidDifferenceVisibility(double x, double y) => InvalidDifferenceBool(x, y) is true ? Visibility.Visible : Visibility.Collapsed;
         public string DifferenceCheckResultText(double x, double y) => InvalidDifferenceBool(x, y) is true ? "Failed" : "Passed";
+        public FontWeight DifferenceCheckResultFontWeight(double x, double y) => InvalidDifferenceBool(x, y) is true ? FontWeights.Bold : FontWeights.Normal;
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

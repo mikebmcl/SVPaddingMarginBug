@@ -516,7 +516,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(SVActualWidthExpectedDifference, SVActualWidthActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(SVActualWidthExpectedDifference, SVActualWidthActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -551,7 +551,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(SVActualHeightExpectedDifference, SVActualHeightActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(SVActualHeightExpectedDifference, SVActualHeightActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -586,7 +586,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ViewPortWidthExpectedDifference, ViewPortWidthActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ViewPortWidthExpectedDifference, ViewPortWidthActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -621,7 +621,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ViewPortHeightExpectedDifference, ViewPortHeightActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ViewPortHeightExpectedDifference, ViewPortHeightActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -662,7 +662,7 @@
                                 -->
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ExtentWidthExpectedDifference, ExtentWidthActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ExtentWidthExpectedDifference, ExtentWidthActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -697,7 +697,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ExtentHeightExpectedDifference, ExtentHeightActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ExtentHeightExpectedDifference, ExtentHeightActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -732,7 +732,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ContentActualHeightExpectedDifference, ContentActualWidthActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ContentActualHeightExpectedDifference, ContentActualWidthActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -767,7 +767,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ContentActualHeightExpectedDifference, ContentActualHeightActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ContentActualHeightExpectedDifference, ContentActualHeightActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -802,7 +802,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ScrollableWidthExpectedDifference, ScrollableWidthActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ScrollableWidthExpectedDifference, ScrollableWidthActualDifference)}" />
                                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}" />
                             </StackPanel>
 
@@ -836,7 +836,7 @@
                                        HorizontalAlignment="Stretch">
                                 <TextBlock Text="{x:Bind DifferenceCheckResultText(ScrollableHeightExpectedDifference, ScrollableHeightActualDifference)}"
                                            Margin="4"
-                                           FontWeight="Bold" />
+                                           FontWeight="{x:Bind DifferenceCheckResultFontWeight(ScrollableHeightExpectedDifference, ScrollableHeightActualDifference)}" />
                                 <!--<Rectangle Style="{StaticResource SeperatorRectangleStyle}" />-->
                             </StackPanel>
                         </Grid>
