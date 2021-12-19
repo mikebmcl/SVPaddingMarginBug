@@ -165,15 +165,16 @@ namespace SVPaddingMarginBug
                     break;
             }
             const int numberOfDigits = 3;
+            var svContent = sv.Content;
             return new ScrollViewerContentExtentData()
             {
                 ScrollViewerName = sv.Name,
                 ContentMargin = contentMargin,
                 ScrollViewerPadding = scrollViewerPadding,
-                ContentActualHeight = $"Content ActualHeight: {((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN).ToString(_dblFormat, _cultureInfo)}",
-                ContentActualHeightValue = Math.Round((sv.Content as FrameworkElement)?.ActualHeight ?? double.NaN, 3),
-                ContentActualWidth = $"Content ActualWidth: {((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN).ToString(_dblFormat, _cultureInfo)}",
-                ContentActualWidthValue = Math.Round((sv.Content as FrameworkElement)?.ActualWidth ?? double.NaN, numberOfDigits),
+                ContentActualHeight = $"Content ActualHeight: {((svContent as FrameworkElement)?.ActualHeight ?? double.NaN).ToString(_dblFormat, _cultureInfo)}",
+                ContentActualHeightValue = Math.Round((svContent as FrameworkElement)?.ActualHeight ?? double.NaN, 3),
+                ContentActualWidth = $"Content ActualWidth: {((svContent as FrameworkElement)?.ActualWidth ?? double.NaN).ToString(_dblFormat, _cultureInfo)}",
+                ContentActualWidthValue = Math.Round((svContent as FrameworkElement)?.ActualWidth ?? double.NaN, numberOfDigits),
                 SVActualHeight = $"ScrollViewer ActualHeight: {sv.ActualHeight.ToString(_dblFormat, _cultureInfo)}",
                 SVActualHeightValue = Math.Round(sv.ActualHeight, numberOfDigits),
                 SVActualWidth = $"ScrollViewer ActualWidth: {sv.ActualWidth.ToString(_dblFormat, _cultureInfo)}",
