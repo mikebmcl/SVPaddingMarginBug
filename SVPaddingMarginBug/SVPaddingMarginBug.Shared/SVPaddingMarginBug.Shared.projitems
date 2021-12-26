@@ -21,7 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)ScrollViewerContentExtentData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScrollViewerContentExtentDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
