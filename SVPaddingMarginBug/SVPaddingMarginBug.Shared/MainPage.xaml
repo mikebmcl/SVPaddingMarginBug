@@ -957,7 +957,6 @@
                             <TextBlock Text="HorizontalOffset:"
 									   Grid.Row="44"
 									   Grid.Column="0"
-									   FontWeight="Bold"
 									   Margin="4" />
                             <TextBlock Text="{x:Bind HorizontalOffsetValue}"
 									   Grid.Row="44"
@@ -966,7 +965,6 @@
                             <TextBlock Text="Expected HorizontalScroll:"
                                        Grid.Row="45"
                                        Grid.Column="0"
-                                       FontWeight="Bold"
                                        Margin="4" />
                             <TextBlock Text="{x:Bind ScrollableWidthValue}"
                                        Grid.Row="45"
@@ -975,7 +973,6 @@
                             <TextBlock Text="Actual HorizontalScroll:"
 									   Grid.Row="46"
 									   Grid.Column="0"
-									   FontWeight="Bold"
 									   Margin="4" />
                             <TextBlock Text="{x:Bind HorizontalOffsetAfterScrollTest}"
 									   Grid.Row="46"
@@ -994,7 +991,6 @@
                             <TextBlock Text="VerticalOffset:"
 									   Grid.Row="48"
 									   Grid.Column="0"
-									   FontWeight="Bold"
 									   Margin="4" />
                             <TextBlock Text="{x:Bind VerticalOffsetValue}"
 									   Grid.Row="48"
@@ -1003,7 +999,6 @@
                             <TextBlock Text="Expected VerticalScroll:"
                                        Grid.Row="49"
                                        Grid.Column="0"
-                                       FontWeight="Bold"
                                        Margin="4" />
                             <TextBlock Text="{x:Bind ScrollableHeightValue}"
                                        Grid.Row="49"
@@ -1012,7 +1007,6 @@
                             <TextBlock Text="Actual VerticalScroll:"
 									   Grid.Row="50"
 									   Grid.Column="0"
-									   FontWeight="Bold"
 									   Margin="4" />
                             <TextBlock Text="{x:Bind VerticalOffsetAfterScrollTest}"
 									   Grid.Row="50"

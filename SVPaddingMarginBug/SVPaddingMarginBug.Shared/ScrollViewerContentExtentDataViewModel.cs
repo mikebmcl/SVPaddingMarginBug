@@ -41,6 +41,7 @@ namespace SVPaddingMarginBug
             }
         }
         private bool _scrollTestBegan;
+        private bool _scrollTestHorizontalScrollFirstScrollComplete;
         private bool _scrollTestHorizontalScrollIsReady;
         private bool _scrollTestVerticalScrollIsReady;
         private bool _scrollTestComplete;
@@ -48,6 +49,7 @@ namespace SVPaddingMarginBug
         private bool _scrollTestResetRequested;
         private void ResetScrollTestValues()
         {
+            _scrollTestHorizontalScrollFirstScrollComplete = false;
             _scrollTestHorizontalScrollIsReady = false;
             _scrollTestVerticalScrollIsReady = false;
             _scrollTestComplete = false;
@@ -58,6 +60,7 @@ namespace SVPaddingMarginBug
         public void BeginScrollTest(ScrollViewer sv)
         {
             var name = sv.Name;
+            var halfScrollableWidth = sv.ScrollableWidth / 2;
             ResetScrollTestValues();
             if (_scrollTestIsRunning)
             {
@@ -74,39 +77,40 @@ namespace SVPaddingMarginBug
                 else
                 {
                     _scrollTestBegan = true;
-                    _ = sv.ChangeView(sv.ScrollableWidth, 0, null, true);
+                    _ = sv.ChangeView(halfScrollableWidth, 0, null, true);
                 }
                 return;
             }
             _scrollTestIsRunning = true;
             _scrollTestBegan = true;
-            _ = sv.ChangeView(sv.ScrollableWidth, 0, null, true);
+            _ = sv.ChangeView(halfScrollableWidth, 0, null, true);
         }
 
         public void UpdateScrollTest(ScrollViewer noMarginAndNoPadding, ScrollViewer sv)
         {
             var name = sv.Name;
+            var halfScrollableWidth = sv.ScrollableWidth / 2;
             if (_scrollTestResetRequested)
             {
                 ResetScrollTestValues();
                 _scrollTestResetRequested = false;
                 _scrollTestIsRunning = true;
-                if (Math.Abs(sv.HorizontalOffset - sv.ScrollableWidth) < 1)
+                if (sv.HorizontalOffset > 0)
                 {
                     _ = sv.ChangeView(0, 0, null, true);
                 }
                 else
                 {
                     _scrollTestBegan = true;
-                    _ = sv.ChangeView(sv.ScrollableWidth, 0, null, true);
+                    _ = sv.ChangeView(halfScrollableWidth, 0, null, true);
                 }
                 return;
             }
-            if (!_scrollTestComplete)
+            if (_scrollTestIsRunning)
             {
                 if (_scrollTestIsRunning && !_scrollTestBegan)
                 {
-                    if (Math.Abs(sv.HorizontalOffset - sv.ScrollableWidth) < 1)
+                    if (sv.HorizontalOffset > 0)
                     {
                         ResetScrollTestValues();
                         _ = sv.ChangeView(0, 0, null, true);
@@ -114,50 +118,68 @@ namespace SVPaddingMarginBug
                     else
                     {
                         _scrollTestBegan = true;
-                        _scrollTestHorizontalScrollIsReady = false;
+                        _scrollTestHorizontalScrollFirstScrollComplete = false;
                         _scrollTestVerticalScrollIsReady = false;
-                        _ = sv.ChangeView(sv.ScrollableWidth, 0, null, true);
+                        _ = sv.ChangeView(halfScrollableWidth, 0, null, true);
                     }
                     return;
                 }
-                if (_scrollTestBegan && !_scrollTestHorizontalScrollIsReady && sv.VerticalOffset == 0)
+                if (_scrollTestBegan && !_scrollTestHorizontalScrollFirstScrollComplete && sv.VerticalOffset == 0)
                 {
                     if (sv.HorizontalOffset == 0)
                     {
                         _scrollTestBegan = true;
                         _scrollTestVerticalScrollIsReady = false;
-                        _ = sv.ChangeView(sv.ScrollableWidth, 0, null, true);
+                        _ = sv.ChangeView(halfScrollableWidth, 0, null, true);
                         return;
                     }
                     else
                     {
-                        _scrollTestHorizontalScrollIsReady = true;
+                        _scrollTestHorizontalScrollFirstScrollComplete = true;
                         _scrollTestVerticalScrollIsReady = false;
                         _ = sv.ChangeView(null, sv.ScrollableHeight, null, true);
                         return;
                     }
                 }
-                if (_scrollTestHorizontalScrollIsReady && !_scrollTestVerticalScrollIsReady && sv.HorizontalOffset > 0)
+                if (_scrollTestHorizontalScrollFirstScrollComplete && !_scrollTestVerticalScrollIsReady && sv.HorizontalOffset > 0)
                 {
                     _scrollTestVerticalScrollIsReady = true;
                     HorizontalOffsetAfterScrollTest = sv.HorizontalOffset;
                     _ = sv.ChangeView(sv.ScrollableWidth, null, null, true);
-                    //return;
+                    return;
                 }
-                if (_scrollTestHorizontalScrollIsReady && _scrollTestVerticalScrollIsReady && sv.VerticalOffset > 0)
+                if (_scrollTestHorizontalScrollFirstScrollComplete && _scrollTestVerticalScrollIsReady && !_scrollTestHorizontalScrollIsReady && sv.VerticalOffset > 0 && sv.HorizontalOffset > 0)
                 {
                     VerticalOffsetAfterScrollTest = sv.VerticalOffset;
-                    UpdateTestsPassedFailedValues(noMarginAndNoPadding, sv);
                     _ = sv.ChangeView(0, 0, null, true);
                     return;
                 }
-                _scrollTestComplete = true;
+                if (_scrollTestHorizontalScrollFirstScrollComplete && _scrollTestVerticalScrollIsReady && !_scrollTestHorizontalScrollIsReady && sv.VerticalOffset == 0 && sv.HorizontalOffset == 0)
+                {
+                    _ = sv.ChangeView(sv.ScrollableWidth, null, null, true);
+                    return;
+                }
+                if (_scrollTestHorizontalScrollFirstScrollComplete && _scrollTestVerticalScrollIsReady && !_scrollTestHorizontalScrollIsReady && sv.VerticalOffset == 0 && sv.HorizontalOffset > 0)
+                {
+                    _scrollTestHorizontalScrollIsReady = true;
+                    _ = sv.ChangeView(null, sv.ScrollableHeight, null, true);
+                    return;
+                }
+                if (_scrollTestHorizontalScrollFirstScrollComplete && _scrollTestVerticalScrollIsReady && _scrollTestHorizontalScrollIsReady && sv.HorizontalOffset > 0 && !_scrollTestComplete)
+                {
+                    HorizontalOffsetAfterScrollTest = sv.HorizontalOffset;
+                    _scrollTestComplete = true;
+                    _ = sv.ChangeView(0, 0, null, true);
+                    return;
+                }
+                UpdateTestsPassedFailedValues(noMarginAndNoPadding, sv);
                 _scrollTestIsRunning = false;
             }
         }
 
         private void UpdateData(ScrollViewer sv)
         {
+            var name = sv.Name;
             var numberOfDigitsForRounding = _numberOfDigitsForRounding;
             var svContent = sv.Content as FrameworkElement;
             ScrollViewerName = sv.Name;
@@ -204,7 +226,7 @@ namespace SVPaddingMarginBug
         public void UpdateTestsPassedFailedValues(ScrollViewer noMarginAndNoPadding, ScrollViewer sv)
         {
             UpdateData(sv);
-
+            var name = sv.Name;
             var numberOfTests = 0;
             var passedTestsCount = 0;
             var fallbackDoubleValue = double.NaN;

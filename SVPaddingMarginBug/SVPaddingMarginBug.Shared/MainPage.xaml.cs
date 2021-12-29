@@ -37,6 +37,7 @@ namespace SVPaddingMarginBug
             // This order matches the order of the ScrollViewers in the left column that the data are extracted from.
             ScrollViewerData = new ObservableCollection<ScrollViewerContentExtentDataViewModel>(new ScrollViewerContentExtentDataViewModel[] { ContentMarginScrollViewerContentExtentData, SVPaddingScrollViewerContentExtentData, BothScrollViewerContentExtentData });
 
+            SizeChanged += MainPage_SizeChanged;
             NeitherStackPanel.SizeChanged += NeitherStackPanel_SizeChanged;
             NeitherScrollViewer.SizeChanged += NeitherScrollViewer_SizeChanged;
             ContentMarginStackPanel.SizeChanged += ContentMarginStackPanel_SizeChanged;
@@ -90,7 +91,7 @@ namespace SVPaddingMarginBug
         }
 
         public string ScrollViewerPaddingName => nameof(ScrollViewerPadding);
-        private Thickness _scrollViewerPadding = new Thickness(16);
+        private Thickness _scrollViewerPadding = new Thickness(4, 6, 11, 13);
         public Thickness ScrollViewerPadding
         {
             get => _scrollViewerPadding;
@@ -105,7 +106,7 @@ namespace SVPaddingMarginBug
         }
 
         public string ContentMarginName => nameof(ContentMargin);
-        private Thickness _contentMargin = new Thickness(10);
+        private Thickness _contentMargin = new Thickness(19, 23, 26, 32);
         public Thickness ContentMargin
         {
             get => _contentMargin;
@@ -337,16 +338,38 @@ namespace SVPaddingMarginBug
             }
         }
 
-        private void NeitherStackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void UpdateForNeither()
         {
             NeitherScrollViewerContentExtentData.UpdateTestsPassedFailedValues(NeitherScrollViewer, NeitherScrollViewer);
             NeitherScrollViewerContentExtentData.BeginScrollTest(NeitherScrollViewer);
+
+            ContentMarginScrollViewerContentExtentData.UpdateTestsPassedFailedValues(NeitherScrollViewer, ContentMarginScrollViewer);
+            ContentMarginScrollViewerContentExtentData.BeginScrollTest(ContentMarginScrollViewer);
+
+            SVPaddingScrollViewerContentExtentData.UpdateTestsPassedFailedValues(NeitherScrollViewer, SVPaddingScrollViewer);
+            SVPaddingScrollViewerContentExtentData.BeginScrollTest(SVPaddingScrollViewer);
+
+            BothScrollViewerContentExtentData.UpdateTestsPassedFailedValues(NeitherScrollViewer, BothScrollViewer);
+            BothScrollViewerContentExtentData.BeginScrollTest(BothScrollViewer);
+        }
+
+        private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            NeitherScrollViewer.LayoutUpdated += NeitherScrollViewer_LayoutUpdated;
+            ContentMarginScrollViewer.LayoutUpdated += ContentMarginScrollViewer_LayoutUpdated;
+            SVPaddingScrollViewer.LayoutUpdated += SVPaddingScrollViewer_LayoutUpdated;
+            BothScrollViewer.LayoutUpdated += BothScrollViewer_LayoutUpdated;
+            UpdateForNeither();
+        }
+
+        private void NeitherStackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateForNeither();
         }
 
         private void NeitherScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            NeitherScrollViewerContentExtentData.UpdateTestsPassedFailedValues(NeitherScrollViewer, NeitherScrollViewer);
-            NeitherScrollViewerContentExtentData.BeginScrollTest(NeitherScrollViewer);
+            UpdateForNeither();
         }
 
         private void ContentMarginStackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
