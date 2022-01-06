@@ -29,6 +29,11 @@ namespace SVPaddingMarginBug
         {
             this.InitializeComponent();
 
+            var displayInformation = Windows.Graphics.Display.DisplayInformation.GetForCurrentView();
+            LogicalDpi = displayInformation?.LogicalDpi ?? 0;
+            RawPixelsPerViewPixel = displayInformation?.RawPixelsPerViewPixel ?? 0;
+            ResolutionScale = displayInformation?.ResolutionScale ?? Windows.Graphics.Display.ResolutionScale.Invalid;
+
             NeitherScrollViewerContentExtentData = new ScrollViewerContentExtentDataViewModel(NeitherDisplayName);
             ContentMarginScrollViewerContentExtentData = new ScrollViewerContentExtentDataViewModel(ContentMarginDisplayName);
             SVPaddingScrollViewerContentExtentData = new ScrollViewerContentExtentDataViewModel(SVPaddingDisplayName);
@@ -62,6 +67,66 @@ namespace SVPaddingMarginBug
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private int _numberOfDigitsForRounding = 3;
+        public int NumberOfDigitsForRounding
+        {
+            get => _numberOfDigitsForRounding;
+            set
+            {
+                if (_numberOfDigitsForRounding != value)
+                {
+                    _numberOfDigitsForRounding = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private float _logicalDpi;
+        public float LogicalDpi
+        {
+            get => _logicalDpi;
+            set
+            {
+                var numberOfDigitsForRounding = _numberOfDigitsForRounding;
+                if (_logicalDpi != (float)Math.Round(value, numberOfDigitsForRounding))
+                {
+                    _logicalDpi = (float)Math.Round(value, numberOfDigitsForRounding);
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        public string LogicalDpiName => nameof(LogicalDpi);
+
+        private double _rawPixelsPerViewPixel;
+        public double RawPixelsPerViewPixel
+        {
+            get => _rawPixelsPerViewPixel;
+            set
+            {
+                var numberOfDigitsForRounding = _numberOfDigitsForRounding;
+                if (_rawPixelsPerViewPixel != Math.Round(value, numberOfDigitsForRounding))
+                {
+                    _rawPixelsPerViewPixel = Math.Round(value, numberOfDigitsForRounding);
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        public string RawPixelsPerViewPixelName => nameof(RawPixelsPerViewPixel);
+
+        private Windows.Graphics.Display.ResolutionScale _resolutionScale;
+        public Windows.Graphics.Display.ResolutionScale ResolutionScale
+        {
+            get => _resolutionScale;
+            set
+            {
+                if (_resolutionScale != value)
+                {
+                    _resolutionScale = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        public string ResolutionScaleName => nameof(ResolutionScale);
 
         private Thickness _scrollViewerBorderThickness = new Thickness(1);
         public Thickness ScrollViewerBorderThickness
@@ -91,7 +156,7 @@ namespace SVPaddingMarginBug
         }
 
         public string ScrollViewerPaddingName => nameof(ScrollViewerPadding);
-        private Thickness _scrollViewerPadding = new Thickness(4, 6, 11, 13);
+        private Thickness _scrollViewerPadding = new Thickness(10, 12, 40, 42);//new Thickness(4, 6, 11, 13);
         public Thickness ScrollViewerPadding
         {
             get => _scrollViewerPadding;
@@ -106,7 +171,7 @@ namespace SVPaddingMarginBug
         }
 
         public string ContentMarginName => nameof(ContentMargin);
-        private Thickness _contentMargin = new Thickness(19, 23, 26, 32);
+        private Thickness _contentMargin = new Thickness(19, 23, 36, 44);
         public Thickness ContentMargin
         {
             get => _contentMargin;

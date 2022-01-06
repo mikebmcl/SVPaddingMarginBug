@@ -260,6 +260,9 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
 
                     <RowDefinition Height="*" />
@@ -278,157 +281,187 @@
                            Grid.ColumnSpan="3"
                            Style="{StaticResource LocalHeaderTextBlockStyle}" />
 
-                <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}"
+                <TextBlock Text="{x:Bind LogicalDpiName, Mode=OneTime}"
                            Grid.Row="1"
+                           Grid.Column="0"
+                           FontWeight="Bold"
+                           Margin="4" />
+                <TextBlock Text="{x:Bind LogicalDpi}"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="4" />
+
+                <TextBlock Text="{x:Bind RawPixelsPerViewPixelName, Mode=OneTime}"
+                           Grid.Row="2"
+                           Grid.Column="0"
+                           FontWeight="Bold"
+                           Margin="4" />
+                <TextBlock Text="{x:Bind RawPixelsPerViewPixel}"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           Margin="4" />
+
+                <TextBlock Text="{x:Bind ResolutionScaleName, Mode=OneTime}"
+                           Grid.Row="3"
+                           Grid.Column="0"
+                           FontWeight="Bold"
+                           Margin="4" />
+                <TextBlock Text="{x:Bind ResolutionScale}"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           Margin="4" />
+
+                <TextBlock Text="{x:Bind ScrollViewerPaddingName, Mode=OneTime}"
+                           Grid.Row="4"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind local:ScrollViewerContentExtentDataViewModel.ThicknessAsString(NeitherScrollViewerContentExtentData.ScrollViewerPadding)}"
-                           Grid.Row="1"
+                           Grid.Row="4"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="{x:Bind ContentMarginName, Mode=OneTime}"
-                           Grid.Row="2"
+                           Grid.Row="5"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind local:ScrollViewerContentExtentDataViewModel.ThicknessAsString(NeitherScrollViewerContentExtentData.ContentMargin)}"
-                           Grid.Row="2"
+                           Grid.Row="5"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="ScrollViewer ActualWidth:"
-                           Grid.Row="3"
+                           Grid.Row="6"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.SVActualWidthValue}"
-                           Grid.Row="3"
+                           Grid.Row="6"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="ScrollViewer ActualHeight:"
-                           Grid.Row="4"
+                           Grid.Row="7"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.SVActualHeightValue}"
-                           Grid.Row="4"
+                           Grid.Row="7"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="Viewport Width:"
-                           Grid.Row="5"
+                           Grid.Row="8"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ViewportWidthValue}"
-                           Grid.Row="5"
+                           Grid.Row="8"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="Viewport Height:"
-                           Grid.Row="6"
+                           Grid.Row="9"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ViewportHeightValue}"
-                           Grid.Row="6"
+                           Grid.Row="9"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="Extent Width:"
-                           Grid.Row="7"
+                           Grid.Row="10"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ExtentWidthValue}"
-                           Grid.Row="7"
+                           Grid.Row="10"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="Extent Height:"
-                           Grid.Row="8"
+                           Grid.Row="11"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ExtentHeightValue}"
-                           Grid.Row="8"
+                           Grid.Row="11"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="Content ActualWidth:"
-                           Grid.Row="9"
+                           Grid.Row="12"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ContentActualWidthValue}"
-                           Grid.Row="9"
+                           Grid.Row="12"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="Content ActualHeight:"
-                           Grid.Row="10"
+                           Grid.Row="13"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ContentActualHeightValue}"
-                           Grid.Row="10"
+                           Grid.Row="13"
                            Grid.Column="1"
                            Margin="4" />
 
                 <TextBlock Text="ScrollableWidth:"
-                           Grid.Row="11"
+                           Grid.Row="14"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableWidthValue}"
-                           Grid.Row="11"
+                           Grid.Row="14"
                            Grid.Column="1"
                            Margin="4" />
                 <TextBlock Text="ScrollableHeight:"
-                           Grid.Row="12"
+                           Grid.Row="15"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableHeightValue}"
-                           Grid.Row="12"
+                           Grid.Row="15"
                            Grid.Column="1"
                            Margin="4" />
 
                 <Rectangle Style="{StaticResource SeperatorRectangleStyle}"
-						   Grid.Row="13"
+						   Grid.Row="16"
 						   Grid.ColumnSpan="2" />
 
                 <TextBlock Text="HorizontalOffset:"
-                           Grid.Row="14"
+                           Grid.Row="17"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.HorizontalOffsetValue}"
-                           Grid.Row="14"
+                           Grid.Row="17"
                            Grid.Column="1"
                            Margin="4" />
                 <TextBlock Text="Expected HorizontalScroll:"
-                           Grid.Row="15"
+                           Grid.Row="18"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableWidthValue}"
-                           Grid.Row="15"
+                           Grid.Row="18"
                            Grid.Column="1"
                            Margin="4" />
                 <TextBlock Text="Actual HorizontalScroll:"
-                           Grid.Row="16"
+                           Grid.Row="19"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.HorizontalOffsetAfterScrollTest}"
-                           Grid.Row="16"
+                           Grid.Row="19"
                            Grid.Column="1"
                            Margin="4" />
-                <StackPanel Grid.Row="17"
+                <StackPanel Grid.Row="20"
                             Grid.ColumnSpan="2"
                             HorizontalAlignment="Stretch">
                     <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.DifferenceCheckResultText(NeitherScrollViewerContentExtentData.ScrollableWidthValue, NeitherScrollViewerContentExtentData.HorizontalOffsetAfterScrollTest)}"
@@ -438,39 +471,38 @@
                 </StackPanel>
 
                 <TextBlock Text="VerticalOffset:"
-                           Grid.Row="18"
+                           Grid.Row="21"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.VerticalOffsetValue}"
-                           Grid.Row="18"
+                           Grid.Row="21"
                            Grid.Column="1"
                            Margin="4" />
                 <TextBlock Text="Expected VerticalScroll:"
-                           Grid.Row="19"
+                           Grid.Row="22"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.ScrollableHeightValue}"
-                           Grid.Row="19"
+                           Grid.Row="22"
                            Grid.Column="1"
                            Margin="4" />
                 <TextBlock Text="Actual VerticalScroll:"
-                           Grid.Row="20"
+                           Grid.Row="23"
                            Grid.Column="0"
                            FontWeight="Bold"
                            Margin="4" />
                 <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.VerticalOffsetAfterScrollTest}"
-                           Grid.Row="20"
+                           Grid.Row="23"
                            Grid.Column="1"
                            Margin="4" />
-                <StackPanel Grid.Row="21"
+                <StackPanel Grid.Row="24"
                             Grid.ColumnSpan="2"
                             HorizontalAlignment="Stretch">
                     <TextBlock Text="{x:Bind NeitherScrollViewerContentExtentData.DifferenceCheckResultText(NeitherScrollViewerContentExtentData.ScrollableHeightValue, NeitherScrollViewerContentExtentData.VerticalOffsetAfterScrollTest)}"
                                Margin="4"
                                FontWeight="{x:Bind NeitherScrollViewerContentExtentData.DifferenceCheckResultFontWeight(NeitherScrollViewerContentExtentData.ScrollableHeightValue, NeitherScrollViewerContentExtentData.VerticalOffsetAfterScrollTest)}" />
-                    <!--<Rectangle Style="{StaticResource SeperatorRectangleStyle}" />-->
                 </StackPanel>
             </Grid>
         </ScrollViewer>
